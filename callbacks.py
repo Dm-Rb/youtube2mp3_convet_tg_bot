@@ -26,9 +26,10 @@ async def process_word_response(callback: CallbackQuery, bot: Bot):
 
             # Отправляем аудио
             await bot.send_audio(chat_id=callback.message.chat.id, audio=input_file)
+            await callback.message.edit_reply_markup(reply_markup=None)
 
             # Уведомляем пользователя об успешной отправке
-            await bot.send_message(chat_id=callback.message.chat.id, text="Аудио успешно отправлено!")
+            # await bot.send_message(chat_id=callback.message.chat.id, text="Аудио успешно отправлено!")
 
         except Exception as e:
             # Если произошла ошибка, отправляем сообщение об ошибке
