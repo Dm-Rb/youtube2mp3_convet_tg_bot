@@ -5,12 +5,13 @@ from aiogram.filters import Command
 from config_file import Config
 from dowload_from_youtube import ytd_obj
 from handlers import router as router_handlers
-
+from callbacks import router as router_callbacks
 
 # Инициализация бота
 bot = Bot(token=Config.BOT_TOKEN)
 dp = Dispatcher()
 dp.include_router(router_handlers)
+dp.include_router(router_callbacks)
 
 
 async def main():
