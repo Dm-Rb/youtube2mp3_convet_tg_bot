@@ -15,7 +15,7 @@ class YouTubeDownloader:
     async def get_metadata(self, url):
         """Асинхронно получает метаданные видео."""
         if self.validate_val not in url:
-            return {'status': False, 'massage': 'Некорректная ссылка'}
+            return {'status': False, 'massage': 'Bad url'}
         #  "cookiefile": "cookies.txt"
         yt_dlp_options = {"quiet": True, "noplaylist": True}
         loop = asyncio.get_event_loop()
