@@ -1,9 +1,7 @@
 import asyncio
 from aiogram import Bot, Dispatcher
-from aiogram.types import Message
-from aiogram.filters import Command
+from aiogram.types import BotCommand
 from config_file import Config
-from dowload_from_youtube import ytd_obj
 from handlers import router as router_handlers
 from callbacks import router as router_callbacks
 
@@ -13,9 +11,15 @@ dp = Dispatcher()
 dp.include_router(router_handlers)
 dp.include_router(router_callbacks)
 
-
 async def main():
-    await dp.start_polling(bot)
+    await bot.set_my_commands([
+        BotCommand(command="start", description="Запусціць бота"),
+        BotCommand(command="help", description="Што рабіць?"),
+    ])
+    try:
+        await dp.start_polling(bot)
+    finally:
+        await bot.session.close()
 
 
 if __name__ == "__main__":

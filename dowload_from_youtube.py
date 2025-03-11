@@ -44,7 +44,7 @@ class YouTubeDownloader:
             'postprocessors': [{  # Конвертируем в MP3
                 'key': 'FFmpegExtractAudio',
                 'preferredcodec': 'mp3',
-                'preferredquality': '192',
+                'preferredquality': '128',
             }],
             'quiet': True,  # Отключение лишних сообщений
         }
@@ -59,7 +59,7 @@ class YouTubeDownloader:
                 mp3_filename = filename.replace(".webm", ".mp3").replace(".m4a", ".mp3")
                 return mp3_filename
         except Exception as e:
-            print(f"Ошибка при скачивании аудио: {e}")
+            print(f"Error: {e}")
             return None
 
 
