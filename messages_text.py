@@ -7,7 +7,7 @@ messages = {
     }
 
 exceptions = {
-    'audio_sent': "Памылка пры адпраўцы файла ў telegram"
+    'audio_sent': "Памылка пры адпраўленні файла ў telegram"
 }
 commands_text = {
     'help': 'Адпраўце боту спасылку на відэа YouTube. Бот cканвертуе відэа ў mp3-файл.',
