@@ -57,10 +57,9 @@ class YouTubeDownloader:
                 # Получаем путь к скачанному файлу
                 filename = ydl.prepare_filename(info)
                 mp3_filename = filename.replace(".webm", ".mp3").replace(".m4a", ".mp3")
-                return mp3_filename
+                return {'status': True, 'massage': mp3_filename}
         except Exception as e:
-            print(f"Error: {e}")
-            return None
+            return {'status': False, 'massage': f"Error: {e}"}
 
 
 ytd_obj = YouTubeDownloader()

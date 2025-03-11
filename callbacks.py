@@ -21,8 +21,13 @@ async def process_word_response(callback: CallbackQuery, bot: Bot):
     if url.startswith("https://www.youtu"):
         try:
             # Обработка, логика
-            path2file = await ytd_obj.download_video_extract_audio(url)
+            response = await ytd_obj.download_video_extract_audio(url)
+            # Если статус ответа False - сворачиваем движ
+            if not response['status']:
+                await bot.send_message(chat_id=callback.message.chat.id, text=response['message'])
+                return
 
+            path2file = response['message']
             # Создаем объект FSInputFile
             input_file = FSInputFile(path=path2file, filename=Path(path2file).name)
 
