@@ -5,7 +5,7 @@ import os
 
 class YouTubeDownloader:
 
-    validate_val = 'https://www.youtu'
+    validate_val = 'youtu'
     output_dir = os.path.join('.', 'downloads')
 
     def __init__(self):
@@ -14,7 +14,7 @@ class YouTubeDownloader:
 
     async def get_metadata(self, url):
         """Асинхронно получает метаданные видео."""
-        if not url.startswith(self.validate_val):
+        if self.validate_val not in url:
             return {'status': False, 'massage': 'Некорректная ссылка'}
         #  "cookiefile": "cookies.txt"
         yt_dlp_options = {"quiet": True, "noplaylist": True}
