@@ -14,10 +14,11 @@ async def get_youtube_metadata(message: Message):
 
     url = message.text
     metadata = await ytd_obj.get_metadata(url)
+    video_id = metadata.get('video_id', '')
     if metadata['status']:
         await message.reply(
             text=youtube_metadata_message(metadata), parse_mode='HTML',
-            reply_markup=get_kb__downloadMP3('dwnld', url, message.from_user.id))
+            reply_markup=get_kb__downloadMP3('dwnld', video_id, message.from_user.id))
     else:
         response = metadata['massage']
         await message.reply(text=response)

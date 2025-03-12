@@ -27,7 +27,7 @@ def youtube_metadata_message(metadata: dict):
         duration = 'Няма інфармацыі'
 
     message = (f"⇨ <b>Назва:</b> {metadata['title']}\n"
-                f"⇨ <b>Аўтар:</b> {metadata['uploader']}\n"
+                f"⇨ <b>Канал:</b> {metadata['uploader']}\n"
                 f"⇨ <b>Працягласць відэа:</b> {duration}\n"
                 f"⇨ <b>Колькасць праглядаў:</b> {views}\n"
                )
