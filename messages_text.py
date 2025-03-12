@@ -31,7 +31,6 @@ def youtube_metadata_message(metadata: dict):
                 f"⇨ <b>Працягласць відэа:</b> {duration}\n"
                 f"⇨ <b>Колькасць праглядаў:</b> {views}\n"
                )
-    if metadata['filesize']:
-        message += f'⇨ Памер файла відэа: {metadata["view_count"]}\n'
+
     return message
 
