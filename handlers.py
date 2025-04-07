@@ -16,7 +16,7 @@ router = Router()
 
 
 # @router.message(Text(startswith="https://www.youtu"))  # Хендлер срабатывает на любое текстовое сообщение
-@router.message(lambda message: "youtu" in message.text)  # Используем лямбду для фильтрации
+@router.message(lambda message: message.text.startswith("https://www.youtu") or message.text.startswith("https://youtu"))  # Используем лямбду для фильтрации
 async def get_youtube_metadata(message: Message):
 
     url = message.text
