@@ -1,6 +1,7 @@
 import yt_dlp
 import asyncio
 import os
+from pathlib import Path
 
 
 class YouTubeDownloader:
@@ -56,7 +57,8 @@ class YouTubeDownloader:
                 info = await loop.run_in_executor(None, ydl.extract_info, url, True)
                 # Получаем путь к скачанному файлу
                 filename = ydl.prepare_filename(info)
-                mp3_filename = filename.replace(".webm", ".mp3").replace(".m4a", ".mp3")
+                extension = Path(filename).suffix  # Вернёт ".jpg"
+                mp3_filename = filename.replace(extension, ".mp3")
                 return {'status': True, 'massage': mp3_filename}
         except Exception as e:
             return {'status': False, 'massage': f"Error: {e}"}
