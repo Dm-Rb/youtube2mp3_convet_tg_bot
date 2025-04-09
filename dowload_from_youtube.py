@@ -18,7 +18,8 @@ class YouTubeDownloader:
         print("11")
         if self.validate_val not in url:
             return {'status': False, 'massage': 'Bad url'}
-        #  "cookiefile": "cookies.txt"
+        # используем video id, кторый содержится в url.
+        # для корректной работы разных url (мобильная версия, короткая ссылка)
         match = re.search(r'(?:[?&]v=)([^&]+)', url)
         if match:
             video_id = match.group(1) # Выведет: DoqVmeBAd7Y
