@@ -2,7 +2,7 @@ import yt_dlp
 import asyncio
 import os
 from pathlib import Path
-
+import re
 
 class YouTubeDownloader:
 
@@ -15,9 +15,16 @@ class YouTubeDownloader:
 
     async def get_metadata(self, url):
         """Асинхронно получает метаданные видео."""
+        print("11")
         if self.validate_val not in url:
             return {'status': False, 'massage': 'Bad url'}
         #  "cookiefile": "cookies.txt"
+        match = re.search(r'(?:[?&]v=)([^&]+)', url)
+        if match:
+            video_id = match.group(1) # Выведет: DoqVmeBAd7Y
+            url = f"https://www.youtube.com/watch?v={video_id}"
+        else:
+            return
         yt_dlp_options = {"quiet": True, "noplaylist": True}
         loop = asyncio.get_event_loop()
         with yt_dlp.YoutubeDL(yt_dlp_options) as ydl:

@@ -5,6 +5,7 @@ from config_file import Config
 from handlers import router as router_handlers
 from callbacks import router as router_callbacks
 
+
 # Инициализация бота
 bot = Bot(token=Config.BOT_TOKEN)
 dp = Dispatcher()

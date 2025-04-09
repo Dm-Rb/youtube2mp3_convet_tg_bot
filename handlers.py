@@ -3,20 +3,16 @@ from aiogram.types import Message
 from dowload_from_youtube import ytd_obj
 from keyboards import get_kb__downloadMP3
 from messages_text import youtube_metadata_message, commands_text
-###4
 from aiogram import Router, Bot
-from aiogram.types import CallbackQuery
 from dowload_from_youtube import ytd_obj
 from aiogram.types import FSInputFile
-from pathlib import Path
-from messages_text import messages, exceptions
 import os
+
 
 router = Router()
 
 
-# @router.message(Text(startswith="https://www.youtu"))  # Хендлер срабатывает на любое текстовое сообщение
-@router.message(lambda message: message.text.startswith("https://www.youtu") or message.text.startswith("https://youtu"))  # Используем лямбду для фильтрации
+@router.message(lambda message: "youtu" in message.text)  # Используем лямбду для фильтрации
 async def get_youtube_metadata(message: Message):
 
     url = message.text
