@@ -1,6 +1,5 @@
-from aiogram import Router, F
+from aiogram import F
 from aiogram.types import Message
-from dowload_from_youtube import ytd_obj
 from keyboards import get_kb__downloadMP3
 from messages_text import youtube_metadata_message, commands_text
 from aiogram import Router, Bot
