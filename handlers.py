@@ -30,11 +30,10 @@ async def get_youtube_metadata(message: Message):
 
 @router.message(F.text.startswith("/start"))
 async def start_training(message: Message):
-    await message.answer(text=commands_text['help'])
+    await message.answer(text=commands_text['start'])
 
 @router.message(F.text.startswith("/help"))
 async def send_audio_handler(message: Message, bot: Bot):  # Добавляем bot в параметры
-    input_file = FSInputFile(path=os.path.join('downloads', 'AFX (Aphex Twin) - 28 organ.mp3'))
-    await bot.send_audio(chat_id=message.chat.id, audio=input_file)
+    await message.answer(text=commands_text['help'])
 
 
