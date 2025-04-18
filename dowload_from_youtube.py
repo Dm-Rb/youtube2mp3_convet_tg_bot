@@ -72,5 +72,3 @@ class YouTubeDownloader:
 
 
 ytd_obj = YouTubeDownloader()
-
-# print(ytd_obj.download_video_extract_audio('https://www.youtube.com/watch?v=69RdQFDuYPI'))
