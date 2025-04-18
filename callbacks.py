@@ -14,7 +14,6 @@ router = Router()
 async def process_word_response(callback: CallbackQuery, bot: Bot):
     # Извлекаем данные из callback_data
     action, video_id, user_id = callback.data.split(";")
-    print(video_id)
     # Отвечаем на callback-запрос сразу
     await callback.message.edit_reply_markup(reply_markup=None)
 

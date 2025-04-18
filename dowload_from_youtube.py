@@ -15,7 +15,6 @@ class YouTubeDownloader:
 
     async def get_metadata(self, url):
         """Асинхронно получает метаданные видео."""
-        print("11")
         if self.validate_val not in url:
             return {'status': False, 'massage': 'Bad url'}
         # используем video id, кторый содержится в url.
