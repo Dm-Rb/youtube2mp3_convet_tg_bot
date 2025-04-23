@@ -35,6 +35,7 @@ async def process_word_response(callback: CallbackQuery, bot: Bot):
         # Отправляем аудио
         await bot.send_audio(chat_id=callback.message.chat.id, audio=input_file)
         # Записываем в данные в sqlite
+
         if os.path.exists(path2file):
             # Удаляем файл
             os.remove(path2file)
