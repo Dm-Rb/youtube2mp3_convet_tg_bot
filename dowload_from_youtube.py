@@ -46,7 +46,6 @@ class YouTubeDownloader:
 
     async def download_video_extract_audio(self, url, bitrate):
         # Настройки для yt-dlp
-        print(bitrate)
         yt_dlp_options = {
             'format': 'bestaudio/best',  # Лучшее качество аудио
             'outtmpl': os.path.join(self.output_dir, '%(title)s.%(ext)s'),  # Шаблон имени файла
