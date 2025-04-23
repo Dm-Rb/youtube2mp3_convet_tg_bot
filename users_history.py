@@ -17,7 +17,7 @@ class UsersHistory:
                 CREATE TABLE IF NOT EXISTS users_history (
                     tg_user_id INTEGER NOT NULL,
                     file_title TEXT UNIQUE NOT NULL,
-                    tg_file_id NTEGER NOT NULL
+                    tg_file_id INTEGER
                 )
                 '''
             )
