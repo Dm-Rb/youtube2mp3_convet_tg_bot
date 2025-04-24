@@ -19,9 +19,19 @@ class YouTubeDownloader:
             return {'status': False, 'massage': 'Bad url'}
         # используем video id, кторый содержится в url.
         # для корректной работы разных url (мобильная версия, короткая ссылка)
-        match = re.search(r'(?:[?&]v=)([^&]+)', url)
-        if match:
-            video_id = match.group(1) # Выведет: DoqVmeBAd7Y
+
+        patterns = [
+            r'(?:[?&]v=)([^&]+)',  # для ссылок типа youtube.com/watch?v=ID
+            r'https?://youtu\.be/([^?]+)'  # для сокращённых ссылок youtu.be/ID
+        ]
+        video_id = None
+        for pattern in patterns:
+            match = re.search(pattern, url)
+            if match:
+                video_id = match.group(1)
+                break
+
+        if video_id:
             url = f"https://www.youtube.com/watch?v={video_id}"
         else:
             return
