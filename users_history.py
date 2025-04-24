@@ -17,18 +17,19 @@ class UsersHistory:
                 CREATE TABLE IF NOT EXISTS users_history (
                     tg_user_id INTEGER NOT NULL,
                     file_title TEXT UNIQUE NOT NULL,
-                    tg_file_id INTEGER
+                    tg_file_id INTEGER,
+                    mp3_bitrate TEXT
                 )
                 '''
             )
             conn.commit()
 
-    async def add_new_row(self, tg_user_id, file_title, tg_file_id):
+    async def add_new_row(self, tg_user_id, file_title, tg_file_id, mp3_bitrate):
         async with aiosqlite.connect(self.database_file) as conn:
 
             await conn.execute(
-                "INSERT INTO users_history (tg_user_id, file_title, tg_file_id) VALUES (?, ?, ?)",
-                (tg_user_id, file_title, tg_file_id,)
+                "INSERT INTO users_history (tg_user_id, file_title, tg_file_id, mp3_bitrate) VALUES (?, ?, ?, ?)",
+                (tg_user_id, file_title, tg_file_id, mp3_bitrate, )
             )
             await conn.commit()
             await conn.close()
