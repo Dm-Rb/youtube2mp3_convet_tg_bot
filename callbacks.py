@@ -33,7 +33,8 @@ async def process_word_response(callback: CallbackQuery, bot: Bot):
         input_file = FSInputFile(path=path2file, filename=filename)
 
         # Отправляем аудио
-        await bot.send_audio(chat_id=callback.message.chat.id, audio=input_file)
+        sent_message = await bot.send_audio(chat_id=callback.message.chat.id, audio=input_file)
+        audio_file_id = sent_message.audio.file_id
         # Записываем в данные в sqlite
 
         if os.path.exists(path2file):
