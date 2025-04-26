@@ -5,7 +5,7 @@ from aiogram.types import FSInputFile
 # from pathlib import Path
 from messages_text import messages, exceptions
 import os
-
+from users_history import data_base_obj
 
 router = Router()
 
@@ -34,8 +34,17 @@ async def process_word_response(callback: CallbackQuery, bot: Bot):
 
         # Отправляем аудио
         sent_message = await bot.send_audio(chat_id=callback.message.chat.id, audio=input_file)
+        # Аргументы для записи в БД
+        audio_file_name = sent_message.audio.file_name
         audio_file_id = sent_message.audio.file_id
         # Записываем в данные в sqlite
+        await data_base_obj.add_new_row(
+            tg_user_id=callback.message.chat.id,
+            file_title=audio_file_name.rstrip('.mp3'),
+            url=f'https://www.youtube.com/watch?v={video_id}',
+            tg_file_id=audio_file_id,
+            mp3_bitrate=bitrate
+        )
 
         if os.path.exists(path2file):
             # Удаляем файл
