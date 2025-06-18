@@ -1,3 +1,6 @@
+Due to the fact that Telegram imposes a 20 MB limit on files sent by bots, it makes sense to deploy your own custom Telegram API Server and work with the bot through it.
+https://tdlib.github.io/telegram-bot-api/build.html
+
 ![5](https://github.com/user-attachments/assets/a7d54e97-6c2c-489c-8bb7-ec498bea2915)
 _________________
 
