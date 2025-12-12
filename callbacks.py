@@ -45,10 +45,13 @@ async def process_word_response(callback: CallbackQuery, bot: Bot):
             tg_file_id=audio_file_id,
             mp3_bitrate=bitrate
         )
+        
+        # Удаляем временные файлы 
+        filename_, extension = os.path.splitext(filename)
+        for file_item in os.listdir("downloads"):
+            if file_item.startswith(filename_):
+                os.remove(os.path.join("downloads", file))
 
-        if os.path.exists(path2file):
-            # Удаляем файл
-            os.remove(path2file)
 
     except Exception as e:
         # Если произошла ошибка, отправляем сообщение об ошибке
