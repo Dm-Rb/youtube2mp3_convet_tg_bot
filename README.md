@@ -1,3 +1,9 @@
+FFmpeg is required on your system:
+````
+sudo apt update
+sudo apt install ffmpegBOT_TOKEN=your_telegram_bot_token
+````
+
 Due to the fact that Telegram imposes a 20 MB limit on files sent by bots, it makes sense to deploy your own custom Telegram API Server and work with the bot through it.
 https://tdlib.github.io/telegram-bot-api/build.html
 
