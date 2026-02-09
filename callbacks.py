@@ -44,7 +44,11 @@ async def process_download_send(callback: CallbackQuery, bot: Bot):
             mp3_bitrate=int(bitrate)
         )
     except Exception as e:
-        pass
+        await bot.send_message(
+                        chat_id=callback.message.chat.id,
+                        text="The video at your URL is not available")
+        raise e
+
     finally:
         # del files frm disc
         if path2file:
