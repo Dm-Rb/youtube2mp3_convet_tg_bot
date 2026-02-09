@@ -44,7 +44,7 @@ async def process_download_send(callback: CallbackQuery, bot: Bot):
             mp3_bitrate=int(bitrate)
         )
     except Exception as e:
-        print(e)
+        pass
     finally:
         # del files frm disc
         if path2file:
