@@ -2,57 +2,58 @@ from aiogram import Router, Bot
 from aiogram.types import CallbackQuery
 from dowload_from_youtube import ytd_obj
 from aiogram.types import FSInputFile
-# from pathlib import Path
-from messages_text import messages, exceptions
-import os
+from messages_text import messages
 from users_history import data_base_obj
+import os
+
 
 router = Router()
 
 
-@router.callback_query(lambda callback: callback.data.startswith("dwnld;"))
-async def process_word_response(callback: CallbackQuery, bot: Bot):
-    # Извлекаем данные из callback_data
-    action, video_id, user_id, bitrate = callback.data.split(";")
-    # Отвечаем на callback-запрос сразу
-    await callback.message.edit_reply_markup(reply_markup=None)
+async def send_file(chat_id, file_path, bot: Bot) -> str:
+    sent_message = await bot.send_audio(
+        chat_id=chat_id,
+        audio=FSInputFile(file_path)
+    )
+    return sent_message.audio.file_id
 
+
+@router.callback_query(lambda callback: callback.data.startswith("dwnld;"))
+async def process_download_send(callback: CallbackQuery, bot: Bot):
+    action, video_id, user_id, bitrate = callback.data.split(";")
+    await callback.message.edit_reply_markup(reply_markup=None)
     await callback.answer(messages['wait'], show_alert=True)
 
+    path2file = None
     try:
-        # Ждём ответ от обработчика
         response = await ytd_obj.download_video_extract_audio(f'https://www.youtube.com/watch?v={video_id}', bitrate)
-        # Если статус ответа False - сворачиваем движ
+        
         if not response['status']:
             await bot.send_message(chat_id=callback.message.chat.id, text=response['massage'])
             return
+        path2file = response['message']
 
-        path2file = response['massage']
-        filename = os.path.basename(path2file)
-        # Создаем объект FSInputFile
-        input_file = FSInputFile(path=path2file, filename=filename)
+        user = callback.from_user.first_name
+        file_id = await send_file(callback.message.chat.id, path2file, bot)
 
-        # Отправляем аудио
-        sent_message = await bot.send_audio(chat_id=callback.message.chat.id, audio=input_file)
-        # Аргументы для записи в БД
-        audio_file_name = sent_message.audio.file_name
-        audio_file_id = sent_message.audio.file_id
-        # Записываем в данные в sqlite
         await data_base_obj.add_new_row(
-            tg_user_id=callback.message.chat.id,
-            file_title=audio_file_name.rstrip('.mp3'),
-            url=f'https://www.youtube.com/watch?v={video_id}',
-            tg_file_id=audio_file_id,
-            mp3_bitrate=bitrate
+            tg_user_id=callback.from_user.id,  # Используйте ID пользователя, а не чата
+            tg_user_full_name=user,
+            file_title=os.path.splitext(os.path.basename(path2file))[0],
+            tg_file_id=file_id,
+            mp3_bitrate=int(bitrate)
         )
-        
-        # Удаляем временные файлы 
-        filename_, extension = os.path.splitext(filename)
-        for file_item in os.listdir("downloads"):
-            if file_item.startswith(filename_):
-                os.remove(os.path.join("downloads", file))
-
-
     except Exception as e:
-        # Если произошла ошибка, отправляем сообщение об ошибке
-        await bot.send_message(chat_id=callback.message.chat.id, text=f"{exceptions['audio_sent']}: {e}")
+        print(e)
+    finally:
+        # del files frm disc
+        if path2file:
+            dir_path = os.path.dirname(path2file)
+            base_name = os.path.splitext(os.path.basename(path2file))[0]
+
+            for filename in os.listdir(dir_path):
+                if filename.startswith(base_name):
+                    full_path = os.path.join(dir_path, filename)
+                    if os.path.isfile(full_path):
+                        os.remove(full_path)
+

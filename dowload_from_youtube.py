@@ -1,8 +1,8 @@
 import yt_dlp
 import asyncio
 import os
-from pathlib import Path
 import re
+
 
 class YouTubeDownloader:
 
@@ -55,30 +55,43 @@ class YouTubeDownloader:
         }
 
     async def download_video_extract_audio(self, url, bitrate):
-        # Настройки для yt-dlp
-        yt_dlp_options = {
-            'format': 'bestaudio/best',  # Лучшее качество аудио
-            'outtmpl': os.path.join(self.output_dir, '%(title)s.%(ext)s'),  # Шаблон имени файла
-            'postprocessors': [{  # Конвертируем в MP3
+        ydl_opts = {
+            'format': 'bestaudio/best',
+            'outtmpl': os.path.join(self.output_dir, '%(title)s.%(ext)s'),
+            'postprocessors': [{
                 'key': 'FFmpegExtractAudio',
                 'preferredcodec': 'mp3',
                 'preferredquality': str(bitrate),
             }],
-            'quiet': True,  # Отключение лишних сообщений
+            'quiet': True,
+            'noplaylist': True,
+            # 'verbose': True,   # для отладки
         }
 
         try:
-            loop = asyncio.get_event_loop()
-            with yt_dlp.YoutubeDL(yt_dlp_options) as ydl:
-                # Асинхронно скачиваем аудио
-                info = await loop.run_in_executor(None, ydl.extract_info, url, True)
-                # Получаем путь к скачанному файлу
-                filename = ydl.prepare_filename(info)
-                extension = Path(filename).suffix  # Вернёт ".jpg"
-                mp3_filename = filename.replace(extension, ".mp3")
-                return {'status': True, 'massage': mp3_filename}
-        except Exception as e:
-            return {'status': False, 'massage': f"Error: {e}"}
+            loop = asyncio.get_running_loop()
+            with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+                info = await loop.run_in_executor(None, lambda: ydl.extract_info(url, download=True))
 
+            # yt-dlp обычно создаёт файл с названием видео + .mp3
+            expected_mp3 = os.path.join(self.output_dir, f"{info.get('title', 'unknown')}.mp3")
+
+            # на случай экранирования или изменения символов ищем последний .mp3
+            if not os.path.exists(expected_mp3):
+                mp3_files = [f for f in os.listdir(self.output_dir) if f.lower().endswith('.mp3')]
+                if mp3_files:
+                    # берём самый новый по времени изменения
+                    latest = max(mp3_files, key=lambda f: os.path.getmtime(os.path.join(self.output_dir, f)))
+                    expected_mp3 = os.path.join(self.output_dir, latest)
+
+            if os.path.exists(expected_mp3):
+                return {'status': True, 'message': expected_mp3}
+            else:
+                return {'status': False, 'message': 'File .mp3 not found after download'}
+
+        except Exception as e:
+            return {'status': False, 'message': f"Error: {str(e)}"}
 
 ytd_obj = YouTubeDownloader()
+
+
