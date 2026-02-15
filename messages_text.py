@@ -30,6 +30,9 @@ commands_text = {
     'start': 'Адпраўце боту спасылку на відэа YouTube. Бот cканвертуе відэа ў mp3-файл.'
 }
 
+dowload_errors = {
+    'age_limit': "‼️ <i>Гэтае відэа мае ўзроставае абмежаванне 18+. Youtube патрабуе аутэнтыфікаціі, спампоўка немагчыма</i> 🤷🏻‍♂️\n\n"
+                 "<i>This video is rated 18+. Youtube requires authentication, download is not possible</i>"}
 
 def youtube_metadata_message(metadata: dict):
     if metadata['view_count']:

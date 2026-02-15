@@ -3,6 +3,7 @@ import asyncio
 import os
 import re
 import logging
+from messages_text import dowload_errors
 
 
 logger = logging.getLogger(__name__)
@@ -58,6 +59,9 @@ class YouTubeDownloader:
                 "thumbnail": info.get('thumbnail')
             }
         except Exception as e:
+            r = self.handler_error_text(e)
+            if r:
+                return r
             logger.error(
                 f"method: get_metadata"
                 f"URL: {url}, "
@@ -79,6 +83,7 @@ class YouTubeDownloader:
             }],
             'quiet': True,
             'noplaylist': True,
+            'ignoreerrors': False,  # чтобы ошибки бросались
             # 'verbose': True,   # для отладки
         }
 
@@ -101,18 +106,30 @@ class YouTubeDownloader:
             if os.path.exists(expected_mp3):
                 return {'status': True, 'message': expected_mp3}
             else:
-                return {'status': False, 'message': 'File .mp3 not found after download'}
+                return {'status': False, 'message': 'File not found'}
 
-        except Exception as e:
+        except Exception as e_:
+
             logger.error(
                 f"method: download_video_extract_audio"
                 f"URL: {url}, "
                 f"Format: {format}, "
                 f"Args: {locals()}, "
-                f"Error type: {type(e).__name__}, "
-                f"Error: {e}",
+                f"Error type: {type(e_).__name__}, "
+                f"Error: {e_}",
                 exc_info=True  # traceback
             )
+
+    @staticmethod
+    def handler_error_text(exception_message) -> dict | None:
+        # handle certain exceptions and return messages to users without throwing an exception and writing to the log
+        error_text = str(exception_message)
+        if "Sign in to confirm your age" in error_text:
+            return {
+                'status': False,
+                'message': dowload_errors['age_limit']
+            }
+        return None
 
 
 ytd_obj = YouTubeDownloader()
