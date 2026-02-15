@@ -33,6 +33,6 @@ async def start_training(message: Message):
 
 @router.message(F.text.startswith("/help"))
 async def send_audio_handler(message: Message, bot: Bot):  # Добавляем bot в параметры
-    await message.answer(text=commands_text['help'])
+    await message.answer(text=commands_text['help'], parse_mode='HTML', disable_web_page_preview=True)
 
 
