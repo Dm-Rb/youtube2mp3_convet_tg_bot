@@ -3,7 +3,7 @@ import asyncio
 import os
 import re
 import logging
-from messages_text import dowload_errors
+from messages_text import download_errors
 
 
 logger = logging.getLogger(__name__)
@@ -127,7 +127,7 @@ class YouTubeDownloader:
         if "Sign in to confirm your age" in error_text:
             return {
                 'status': False,
-                'message': dowload_errors['age_limit']
+                'message': download_errors['age_limit']
             }
         return None
 
