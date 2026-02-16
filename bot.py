@@ -7,7 +7,7 @@ from aiogram import Bot, Dispatcher, F
 from aiogram.client.session.aiohttp import AiohttpSession
 from aiogram.client.telegram import TelegramAPIServer 
 import logging
-
+from rm_trash_files import trash_scheduler
 
 logging.basicConfig(
     level=logging.ERROR,  # Только ошибки
@@ -39,6 +39,9 @@ async def main():
         BotCommand(command="start", description="Запусціць бота"),
         BotCommand(command="help", description="Што рабіць?"),
     ])
+
+    asyncio.create_task(trash_scheduler())  # once an hour, it scans the directory with temporary files and deletes
+    # those with a date/time older than 1 hour.
     try:
         await dp.start_polling(bot)
     finally:
