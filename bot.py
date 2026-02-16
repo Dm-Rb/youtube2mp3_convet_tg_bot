@@ -7,7 +7,8 @@ from aiogram import Bot, Dispatcher, F
 from aiogram.client.session.aiohttp import AiohttpSession
 from aiogram.client.telegram import TelegramAPIServer 
 import logging
-from rm_trash_files import trash_scheduler
+from rm_temp_files import trash_scheduler
+
 
 logging.basicConfig(
     level=logging.ERROR,  # Только ошибки
