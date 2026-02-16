@@ -129,6 +129,11 @@ class YouTubeDownloader:
                 'status': False,
                 'message': download_errors['age_limit']
             }
+        elif "Video unavailable" in error_text:
+            return {
+                'status': False,
+                'message': download_errors['unavailable']
+            }
         return None
 
 

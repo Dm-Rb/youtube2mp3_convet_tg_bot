@@ -32,7 +32,9 @@ commands_text = {
 
 download_errors = {
     'age_limit': "‼️ <i>Гэтае відэа мае ўзроставае абмежаванне 18+. Youtube патрабуе аутэнтыфікацыі, спампоўка немагчыма</i> 🤷🏻‍♂️\n\n"
-                 "<i>This video is rated 18+. Youtube requires authentication, download is not possible</i>"}
+                 "<i>This video is rated 18+. Youtube requires authentication, download is not possible</i>",
+    'unavailable': "‼️ <i>Гэтае відэа не даступна для бота па рэгіанальнаму абмежаванню (BEL ip). Спампоўка немагчыма</i> 🤷🏻‍♂️\n\n"
+                 "<i>This video is not available for bot due to region restrictions. Download is not possible</i>"}
 
 def youtube_metadata_message(metadata: dict):
     if metadata['view_count']:
