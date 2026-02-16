@@ -17,7 +17,7 @@ async def remove_tmp_files(dirpath='downloads', timedelta_hours=1):
     for filename in os.listdir(dirpath):
         stats = os.stat(os.path.join(dirpath, filename))
         ctime = datetime.datetime.fromtimestamp(stats.st_ctime)
-        if datetime_now - ctime <= timedelta:
+        if datetime_now - ctime >= timedelta:
             try:
                 # remove
                 os.remove(os.path.join(dirpath, filename))
